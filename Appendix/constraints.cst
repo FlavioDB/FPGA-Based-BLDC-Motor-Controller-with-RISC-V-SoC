@@ -1,0 +1,105 @@
+// Gowin Physical Constraint File
+// Project: BLDC Motor Controller iChip course 同济大学 June 2024
+// Target: Sipeed Tang Primer 20K (GW2A-LV18PG256C8/I7 based)
+//
+// --- Legend for IO_PORT Attributes ---
+// IO_TYPE = LVCMOS33 -> 3.3V Logic standard (noise margins, voltage levels).
+// PULL_MODE = UP     -> Enables a weak internal pull-up resistor (prevents floating on inputs).
+// PULL_MODE = NONE   -> Disables internal pull resistors (standard for outputs).
+// DRIVE = 8          -> Defines output current capability as 8mA.
+// BANK_VCCIO = 3.3 -> Specifies the I/O bank voltage is 3.3V.
+
+// !! IMPORTANT !!
+// The Verilog signal names in quotes (e.g., "clk") must exactly match the
+// top-level port names in your main Verilog file.
+
+// --- Clock Input ---
+IO_LOC "clk" H11; // 27MHz clock input from on-board oscillator
+IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+/*
+// --- Reset Input #Button S4 on the Dock --
+IO_LOC "rst_n" C7;
+IO_PORT "rst_n" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+*/
+// --- Brake Input #Button S0 on the Dock ---
+IO_LOC "BLDC_final_BRAKE" C7;
+IO_PORT "BLDC_final_BRAKE" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// --- Motor Control Outputs (to H-Bridge) ---
+// Note: PULL_MODE=NONE is standard for actively driven output pins.
+IO_LOC "BLDC_final_hsu" J14; // HS_U
+IO_PORT "BLDC_final_hsu" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "BLDC_final_lsu" M15; // LS_U
+IO_PORT "BLDC_final_lsu" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "BLDC_final_hsv" J16; // HS_V
+IO_PORT "BLDC_final_hsv" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "BLDC_final_lsv" T12; // LS_V
+IO_PORT "BLDC_final_lsv" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "BLDC_final_hsw" M14; // HS_W
+IO_PORT "BLDC_final_hsw" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "BLDC_final_lsw" R11; // LS_W
+IO_PORT "BLDC_final_lsw" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// --- Hall Sensor Inputs ---
+// Note: DRIVE attribute is not applicable to inputs.
+//IO_LOC "io_pad_in_HAL_A" T8;
+//IO_PORT "io_pad_in_HAL_A" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+//IO_LOC "io_pad_in_HAL_B" T9;
+//IO_PORT "io_pad_in_HAL_B" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+//IO_LOC "io_pad_in_HAL_C" P9;
+//IO_PORT "io_pad_in_HAL_C" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// --- LED Indicators (DRIVE=4mA is sufficient) ---
+// Blink LED connected to Orange_LEDO (indicates CPU is running)
+/*IO_LOC "heartbeat_led_out" C13;
+IO_PORT "heartbeat_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+*/
+
+// Brake Status LED connected to Orange_LED1
+IO_LOC "brake_led_out" A13;
+IO_PORT "brake_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+
+
+// Motor Direction Status LED connected to Orange_LED3
+//IO_LOC "direction_led_out" N16;
+//IO_PORT "direction_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+
+// Static Mode LED
+//IO_LOC "static_mode_led_out" N14;
+//IO_PORT "static_mode_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+
+// PWM Mode LED
+//IO_LOC "pwm_mode_led_out" L14;
+//IO_PORT "pwm_mode_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+
+// SPWM Mode LED
+//IO_LOC "spwm_mode_led_out" L16;
+//IO_PORT "spwm_mode_led_out" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=4 BANK_VCCIO=3.3;
+
+
+/*
+// --- JTAG Interface (Essential for programming and debugging) ---
+// JTAG (Joint Test Action Group -> mechanism used to program the FPGA's configuration memory and to debug the hardware in real-time)
+//  They are for the fundamental infrastructure that allows your computer to program and communicate with the FPGA chip, leave them as they are
+IO_LOC "tdi" A7;
+IO_PORT "tdi" IO_TYPE=LVCMOS33 PULL_MODE=UP; // Test Data In
+IO_LOC "tdo" C6;
+IO_PORT "tdo" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8; // Test Data Out
+IO_LOC "tck" A6;
+IO_PORT "tck" IO_TYPE=LVCMOS33 PULL_MODE=UP; // Test Clock
+IO_LOC "tms" B8;
+IO_PORT "tms" IO_TYPE=LVCMOS33 PULL_MODE=UP; // Test Mode Select
+*/
+//Useful for debug printing, to be kept intact
+IO_LOC "gpio_in[16]" T13;
+IO_LOC "gpio_out[17]" M11;
+
+IO_PORT "gpio_in[16]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_PORT "gpio_out[17]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
